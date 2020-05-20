@@ -1,0 +1,20 @@
+{
+    "bracket-pair-colorizer-2.excludedLanguages": [
+    
+    ],
+    "bracket-pair-colorizer-2.forceIterationColorCycle": true,
+    "bracketPairColorizer.forceIterationColorCycle": true,
+    "bracketPairColorizer.forceUniqueOpeningColor": true,
+    "bracketPairColorizer.consecutivePairColors": [
+        "()",
+        "[]",
+        "{}",
+        [
+            "Gold",
+            "Orchid",
+            "LightSkyBlue",
+            "LimeGreen"
+        ],
+        "Red"
+    ],
+}
