@@ -9,7 +9,11 @@ class CountdownBloc extends Bloc<CountdownEvent, List<Countdown>> {
   bool initialized = false;
 
   @override
-  List<Countdown> get initialState => List<Countdown>();
+  List<Countdown> get initialState {
+    List<Countdown> countdowns;
+    DatabaseUtils.getCountdowns().then((list) => countdowns = list);
+    return countdowns;
+  }
   
 
   @override
