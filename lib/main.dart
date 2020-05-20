@@ -22,6 +22,7 @@ class MyApp extends StatelessWidget {
           primaryColor: Colors.teal.shade500,
         ),
         home: Home(),
+        darkTheme: ThemeData.dark(),
       ),
     );
   }
