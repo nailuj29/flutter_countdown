@@ -5,8 +5,6 @@ import 'package:countdown/models/countdown.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
 class CountdownBloc extends Bloc<CountdownEvent, List<Countdown>> {
-  
-  bool initialized = false;
 
   @override
   List<Countdown> get initialState {
