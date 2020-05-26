@@ -47,7 +47,7 @@ class _HomeState extends State<Home> {
               );
             }, 
             separatorBuilder: null, 
-            itemCount: countdownList.length;
+            itemCount: countdownList.length
           );
         },
       )
