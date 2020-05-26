@@ -12,4 +12,7 @@ class Countdowns extends Table {
 @UseMoor(tables: [Countdowns])
 class AppDatabase extends _$AppDatabase {
   AppDatabase() : super(FlutterQueryExecutor.inDatabaseFolder(path: "countdowns.db", logStatements: true));
+
+  @override
+  int get schemaVersion => 1;
 }
