@@ -27,7 +27,7 @@ class CountdownBloc extends Bloc<CountdownEvent, List<Countdown>> {
         break;
       case CountdownEventType.delete:
         List<Countdown> newState = List.from(state);
-        newState.remove(event.countdown)
+        newState.remove(event.countdown);
         DatabaseUtils.deleteCountdown(event.countdown);
         yield newState;
         break;
@@ -44,5 +44,4 @@ class CountdownBloc extends Bloc<CountdownEvent, List<Countdown>> {
         throw Exception('Event not found: $event');
     }
   } 
- 
 }
