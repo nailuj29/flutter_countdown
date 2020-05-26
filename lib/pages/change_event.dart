@@ -70,9 +70,15 @@ class _ChangeEventScreenState extends State<ChangeEventScreen> {
   }
 
   Future<DateTime> _getNewDate(DateTime currentDate) async {
-    DateTime _date = showDatePicker(
+    DateTime _date = await showDatePicker(
       context: context,
-      
-    )  
+      initialDate: currentDate,
+      firstDate: currentDate.subtract(Duration(days: 365)),
+      lastDate: currentDate.add(Duration(days: 365 * 5))
+    );
+    if (_date == null) {
+      return null;
+    }
+    return _date;
   }
 }
