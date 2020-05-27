@@ -1,5 +1,5 @@
 import 'package:countdown/blocs/countdown_bloc.dart';
-import 'package:countdown/models/countdown.dart';
+import 'package:countdown/database/moor_db.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
@@ -38,7 +38,7 @@ class _HomeState extends State<Home> {
               return Dismissible(
                 key: Key(countdownList[index].id.toString()),
                 child: ListTile(
-                  
+                  // TODO: Finish ListTile widget.
                 ),
                 background: Container(
                   color: Colors.red,
@@ -50,7 +50,6 @@ class _HomeState extends State<Home> {
             itemCount: countdownList.length
           );
         },
-
         listener: (BuildContext context, List<Countdown> countdowns) {},
       )
     );

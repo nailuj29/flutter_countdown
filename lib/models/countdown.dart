@@ -1,3 +1,4 @@
+@deprecated
 class Countdown {
   final int id;
   final DateTime date;

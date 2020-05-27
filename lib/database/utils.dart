@@ -2,7 +2,7 @@ import 'package:countdown/models/countdown.dart';
 import 'package:flutter/material.dart';
 import 'package:path/path.dart';
 import 'package:sqflite/sqflite.dart';
-
+@deprecated
 class DatabaseUtils {
   static final Future<Database> database = getDatabasesPath().then((path) {
     return openDatabase(
