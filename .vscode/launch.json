@@ -6,9 +6,10 @@
     "configurations": [
         
         {
-            "name": "Flutter",
+            "name": "Flutter Debug",
             "request": "launch",
-            "type": "dart"
+            "type": "dart",
+            "args": ["--debug"]
         }
     ]
 }

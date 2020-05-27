@@ -50,6 +50,8 @@ class _HomeState extends State<Home> {
             itemCount: countdownList.length
           );
         },
+
+        listener: (BuildContext context, List<Countdown> countdowns) {},
       )
     );
   }
