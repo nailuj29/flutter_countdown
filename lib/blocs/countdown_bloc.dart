@@ -10,7 +10,7 @@ class CountdownBloc extends Bloc<CountdownEvent, List<Countdown>> {
   @override
   List<Countdown> get initialState {
     List<Countdown> countdowns;
-    DatabaseUtils.getCountdowns().then((list) => countdowns = list);
+    //DatabaseUtils.getCountdowns().then((list) => countdowns = list);
     return countdowns;
   }
   
@@ -21,8 +21,8 @@ class CountdownBloc extends Bloc<CountdownEvent, List<Countdown>> {
       case CountdownEventType.add:
         List<Countdown> newState = List.from(state);
         if (event.countdown != null) {
-          newState.add(event.countdown);
-          DatabaseUtils.insertCountdown(event.countdown);
+          // newState.add(event.countdown);
+          // DatabaseUtils.insertCountdown(event.countdown);
         }
         yield newState;
         break;
