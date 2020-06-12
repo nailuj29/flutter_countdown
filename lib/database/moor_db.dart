@@ -16,5 +16,16 @@ class AppDatabase extends _$AppDatabase {
   @override
   int get schemaVersion => 1;
 
-  // TODO: Add data methods to AppDatabase class
+  // Create
+  Future<int> insertCountdown(Countdown countdown) => into(countdowns).insert(countdown);
+  
+  // Read
+  Future<List<Countdown>> getCountdowns() => select(countdowns).get();
+  Stream<List<Countdown>> watchCountdowns() => select(countdowns).watch();
+
+  // Update
+  Future<bool> updateCountdown(Countdown countdown) => update(countdowns).replace(countdown);
+
+  // Delete
+  Future<int> deleteCountdown(Countdown countdown) => delete(countdowns).delete(countdown);
 }
