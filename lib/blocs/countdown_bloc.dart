@@ -30,12 +30,14 @@ class CountdownBloc extends Bloc<CountdownEvent, List<Countdown>> {
       case CountdownEventType.delete:
         List<Countdown> newState = List.from(state);
         newState.remove(event.countdown);
+        _db.deleteCountdown(event.countdown);
         yield newState;
         break;
       case CountdownEventType.edit:
         List<Countdown> newState = List.from(state);
-        newState.sort((Countdown a, Countdown b) => a.id.compareTo(b.id));
-        newState[event.countdown.id] = event.countdown;
+        int idx = newState.indexWhere((element) => element.id == event.countdown.id);
+        newState[idx] = event.countdown;
+        _db.updateCountdown(event.countdown);
         yield newState;
         break;
       default:
