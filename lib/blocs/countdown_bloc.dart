@@ -6,7 +6,6 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 class CountdownBloc extends Bloc<CountdownEvent, List<Countdown>> {
 
   AppDatabase _db;
-  // TODO: Switch fully to moor
   @override
   List<Countdown> get initialState {
 
@@ -15,8 +14,7 @@ class CountdownBloc extends Bloc<CountdownEvent, List<Countdown>> {
     _db.getCountdowns().then((value) => countdowns = value);
     return countdowns;
   }
-  
-  // TODO: Switch fully to moor
+
   @override
   Stream<List<Countdown>> mapEventToState(CountdownEvent event) async* {
     switch(event.type) {

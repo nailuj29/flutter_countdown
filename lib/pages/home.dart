@@ -38,8 +38,24 @@ class _HomeState extends State<Home> {
               return Dismissible(
                 key: Key(countdownList[index].id.toString()),
                 child: ListTile(
-                  // TODO: Finish ListTile widget.
-                ),
+                  leading: Container(
+                    child: Column(
+                      children: <Widget>[
+                        Text(
+                          countdownList[index].date.month.toString(),
+                          style: TextStyle(
+                            fontSize: 12,
+                          )
+                        ),
+                        Text(
+                          countdownList[index].date.day.toString(),
+                          style: TextStyle(
+                            fontSize: 24,
+                          )
+                        )
+                      ],
+                    ),
+                  ),
                 background: Container(
                   color: Colors.red,
                   
