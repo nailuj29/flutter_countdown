@@ -29,7 +29,6 @@ class CountdownBloc extends Bloc<CountdownEvent, List<Countdown>> {
       case CountdownEventType.delete:
         List<Countdown> newState = List.from(state);
         newState.remove(event.countdown);
-        DatabaseUtils.deleteCountdown(event.countdown);
         yield newState;
         break;
       case CountdownEventType.edit:
@@ -37,9 +36,6 @@ class CountdownBloc extends Bloc<CountdownEvent, List<Countdown>> {
         newState.sort((Countdown a, Countdown b) => a.id.compareTo(b.id));
         newState[event.countdown.id] = event.countdown;
         yield newState;
-        break;
-      case CountdownEventType.ready:
-        yield List.from(event.countdowns);
         break;
       default:
         throw Exception('Event not found: $event');
