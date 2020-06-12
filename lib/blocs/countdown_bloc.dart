@@ -1,16 +1,18 @@
 
-import 'package:countdown/database/utils.dart';
 import 'package:countdown/events/countdown_event.dart';
 import 'package:countdown/database/moor_db.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
 class CountdownBloc extends Bloc<CountdownEvent, List<Countdown>> {
 
+  AppDatabase _db;
   // TODO: Switch fully to moor
   @override
   List<Countdown> get initialState {
+
+    _db = AppDatabase();
     List<Countdown> countdowns;
-    //DatabaseUtils.getCountdowns().then((list) => countdowns = list);
+    _db.getCountdowns().then((value) => countdowns = value);
     return countdowns;
   }
   
@@ -21,8 +23,7 @@ class CountdownBloc extends Bloc<CountdownEvent, List<Countdown>> {
       case CountdownEventType.add:
         List<Countdown> newState = List.from(state);
         if (event.countdown != null) {
-          // newState.add(event.countdown);
-          // DatabaseUtils.insertCountdown(event.countdown);
+          _db.insertCountdown(event.countdown);
         }
         yield newState;
         break;
