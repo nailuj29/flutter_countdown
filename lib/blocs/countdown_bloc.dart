@@ -8,7 +8,7 @@ class CountdownBloc extends Bloc<CountdownEvent, List<Countdown>> {
   List<Countdown> get initialState {
     _db = AppDatabase();
     List<Countdown> countdowns;
-    _db.getCountdowns().then((value) => );
+    _db.getCountdowns().then((value) => add(CountdownEvent.ready(value)));
 
     return countdowns;
   }
@@ -37,6 +37,8 @@ class CountdownBloc extends Bloc<CountdownEvent, List<Countdown>> {
         _db.updateCountdown(event.countdown);
         yield newState;
         break;
+      case CountdownEventType.ready:
+        yield event.countdowns;
       default:
         throw Exception('Event not found: $event');
     }
