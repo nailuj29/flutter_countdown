@@ -1,23 +1,21 @@
-
 import 'package:countdown/events/countdown_event.dart';
 import 'package:countdown/database/moor_db.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
 class CountdownBloc extends Bloc<CountdownEvent, List<Countdown>> {
-
   AppDatabase _db;
   @override
   List<Countdown> get initialState {
-
     _db = AppDatabase();
     List<Countdown> countdowns;
-    _db.getCountdowns().then((value) => countdowns = value);
+    _db.getCountdowns().then((value) => );
+
     return countdowns;
   }
 
   @override
   Stream<List<Countdown>> mapEventToState(CountdownEvent event) async* {
-    switch(event.type) {
+    switch (event.type) {
       case CountdownEventType.add:
         List<Countdown> newState = List.from(state);
         if (event.countdown != null) {
@@ -33,7 +31,8 @@ class CountdownBloc extends Bloc<CountdownEvent, List<Countdown>> {
         break;
       case CountdownEventType.edit:
         List<Countdown> newState = List.from(state);
-        int idx = newState.indexWhere((element) => element.id == event.countdown.id);
+        int idx =
+            newState.indexWhere((element) => element.id == event.countdown.id);
         newState[idx] = event.countdown;
         _db.updateCountdown(event.countdown);
         yield newState;
@@ -41,5 +40,5 @@ class CountdownBloc extends Bloc<CountdownEvent, List<Countdown>> {
       default:
         throw Exception('Event not found: $event');
     }
-  } 
+  }
 }

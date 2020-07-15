@@ -12,62 +12,57 @@ class Home extends StatefulWidget {
 }
 
 class _HomeState extends State<Home> {
-  
   @override
   Widget build(BuildContext context) {
     // One day gets rounded off
     return Scaffold(
-      appBar: AppBar(
-        title: const Text("Countdown"),
-        actions: <Widget>[
-          /* IconButton(
+        appBar: AppBar(
+          title: const Text("Countdown"),
+          actions: <Widget>[
+            /* IconButton(
             icon: Icon(Icons.settings), 
             onPressed: () {},
           ), */
-          IconButton(
-            icon: Icon(Icons.calendar_today), 
-            onPressed:  () {},
-          )
-        ],
-      ),
-
-      body: BlocConsumer<CountdownBloc, List<Countdown>>(
-        builder: (context, countdownList) {
-          return ListView.separated(
-            itemBuilder: (context, index) {
-              return Dismissible(
-                key: Key(countdownList[index].id.toString()),
-                child: ListTile(
-                  leading: Container(
-                    child: Column(
-                      children: <Widget>[
-                        Text(
-                          countdownList[index].date.month.toString(),
-                          style: TextStyle(
-                            fontSize: 12,
-                          )
+            IconButton(
+              icon: Icon(Icons.calendar_today),
+              onPressed: () {},
+            )
+          ],
+        ),
+        body: BlocConsumer<CountdownBloc, List<Countdown>>(
+          builder: (context, countdownList) {
+            return ListView.separated(
+                itemBuilder: (context, index) {
+                  return Dismissible(
+                    key: Key(countdownList[index].id.toString()),
+                    child: ListTile(
+                      leading: Container(
+                        child: Column(
+                          children: <Widget>[
+                            Text(countdownList[index].date.month.toString(),
+                                style: TextStyle(
+                                  fontSize: 12,
+                                )),
+                            Text(countdownList[index].date.day.toString(),
+                                style: TextStyle(
+                                  fontSize: 24,
+                                ))
+                          ],
                         ),
-                        Text(
-                          countdownList[index].date.day.toString(),
-                          style: TextStyle(
-                            fontSize: 24,
-                          )
-                        )
-                      ],
+                      ),
                     ),
-                  ),
-                background: Container(
-                  color: Colors.red,
-                  
-                ),
-              );
-            }, 
-            separatorBuilder: null, 
-            itemCount: countdownList.length
-          );
-        },
-        listener: (BuildContext context, List<Countdown> countdowns) {},
-      )
-    );
+                    background: Container(
+                      color: Colors.red,
+                    ),
+                    secondaryBackground: Container(
+                      color: Colors.red,
+                    ),
+                  );
+                },
+                separatorBuilder: null,
+                itemCount: countdownList.length);
+          },
+          listener: (BuildContext context, List<Countdown> countdowns) {},
+        ));
   }
 }
