@@ -14,7 +14,6 @@ class Home extends StatefulWidget {
 class _HomeState extends State<Home> {
   @override
   Widget build(BuildContext context) {
-    // One day gets rounded off
     return Scaffold(
         appBar: AppBar(
           title: const Text("Countdown"),
@@ -59,8 +58,12 @@ class _HomeState extends State<Home> {
                     ),
                   );
                 },
-                separatorBuilder: null,
-                itemCount: countdownList.length);
+                separatorBuilder: (context, index) {
+                  return Divider(
+                    color: Colors.black,
+                  );
+                },
+                itemCount: countdownList == null ? 0 : countdownList.length);
           },
           listener: (BuildContext context, List<Countdown> countdowns) {},
         ));
