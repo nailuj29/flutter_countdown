@@ -46,7 +46,9 @@ class _ChangeEventScreenState extends State<ChangeEventScreen> {
                   Icon(Icons.arrow_drop_down, color: Colors.black54)
                 ],
               ),
-              onPressed: () async {},
+              onPressed: () async {
+                setDate();
+              },
             )
           ],
         ),
