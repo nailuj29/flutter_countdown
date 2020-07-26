@@ -63,7 +63,7 @@ class _ChangeEventScreenState extends State<ChangeEventScreen> {
         firstDate: currentDate.subtract(Duration(days: 365)),
         lastDate: currentDate.add(Duration(days: 365 * 5)));
     if (_date == null) {
-      return null;
+      return currentDate;
     }
     return _date;
   }
