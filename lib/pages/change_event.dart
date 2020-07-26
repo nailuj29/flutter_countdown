@@ -31,7 +31,8 @@ class _ChangeEventScreenState extends State<ChangeEventScreen> {
         child: Column(
           children: <Widget>[
             FlatButton(
-              padding: EdgeInsets.all(0.0),
+              padding: EdgeInsets.all(10.0),
+              color: Colors.grey[300],
               child: Row(
                 children: <Widget>[
                   Icon(Icons.calendar_today, size: 22.0, color: Colors.black54),
@@ -52,6 +53,7 @@ class _ChangeEventScreenState extends State<ChangeEventScreen> {
             )
           ],
         ),
+        padding: EdgeInsets.all(16.0),
       ),
     );
   }
