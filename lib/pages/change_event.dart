@@ -39,7 +39,7 @@ class _ChangeEventScreenState extends State<ChangeEventScreen> {
                     width: 16.0,
                   ),
                   Text(
-                    DateFormat.yMMMd(date).toString(),
+                    DateFormat.yMMMd().format(date),
                     style: TextStyle(
                         color: Colors.black54, fontWeight: FontWeight.bold),
                   ),
