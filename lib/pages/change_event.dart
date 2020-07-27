@@ -1,10 +1,17 @@
+import 'package:countdown/database/moor_db.dart';
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 
 class ChangeEventScreen extends StatefulWidget {
   final DateTime initialDate;
+  Countdown countdown;
 
-  ChangeEventScreen({this.initialDate});
+  ChangeEventScreen({this.initialDate, this.countdown}) {
+    if (initialDate != null && countdown != null) {
+      throw Exception(
+          "Cannot pass both countdown and initialDate to constructor");
+    }
+  }
 
   @override
   State<StatefulWidget> createState() =>
