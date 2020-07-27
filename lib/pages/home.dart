@@ -23,10 +23,6 @@ class _HomeState extends State<Home> {
             icon: Icon(Icons.settings), 
             onPressed: () {},
           ), */
-          IconButton(
-            icon: Icon(Icons.calendar_today),
-            onPressed: () {},
-          )
         ],
       ),
       body: BlocConsumer<CountdownBloc, List<Countdown>>(
@@ -70,6 +66,7 @@ class _HomeState extends State<Home> {
       ),
       floatingActionButton: FloatingActionButton(
         onPressed: () async {
+          // ignore: close_sinks
           CountdownBloc bloc = BlocProvider.of<CountdownBloc>(context);
           Countdown result = await Navigator.push<Countdown>(
               context,
