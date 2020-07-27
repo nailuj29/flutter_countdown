@@ -3,13 +3,18 @@ import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 
 class ChangeEventScreen extends StatefulWidget {
-  final DateTime initialDate;
+  DateTime initialDate;
   Countdown countdown;
 
   ChangeEventScreen({this.initialDate, this.countdown}) {
     if (initialDate != null && countdown != null) {
       throw Exception(
           "Cannot pass both countdown and initialDate to constructor");
+    }
+    if (countdown != null) {
+      initialDate = countdown.date;
+    } else if (initialDate != null) {
+      countdown = Countdown(date: initialDate);
     }
   }
 
