@@ -5,26 +5,22 @@ import 'package:countdown/pages/home.dart';
 
 import 'blocs/countdown_bloc_delegate.dart';
 
-void main() async { 
+void main() async {
   BlocSupervisor.delegate = CountdownBlocDelegate();
-  runApp(MyApp()); 
+  runApp(MyApp());
 }
 
 class MyApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
-        title: "Countdown",
-        debugShowCheckedModeBanner: false,
-        theme: ThemeData(
-          primaryColor: Colors.teal.shade500,
-        ),
-        home: BlocProvider<CountdownBloc>(
-          create: (context) => CountdownBloc(),
-          child: Home()
-        ),
-        darkTheme: ThemeData.dark(),
+      title: "Countdown",
+      debugShowCheckedModeBanner: false,
+      theme: ThemeData(
+        primaryColor: Colors.teal.shade500,
+      ),
+      home: BlocProvider<CountdownBloc>(
+          create: (context) => CountdownBloc(), child: Home()),
     );
   }
-
 }
