@@ -2,21 +2,28 @@ import 'package:countdown/database/moor_db.dart';
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 
+// ignore: must_be_immutable
 class ChangeEventScreen extends StatefulWidget {
   DateTime initialDate;
   Countdown countdown;
 
-  ChangeEventScreen({this.initialDate, this.countdown}) {
+  ChangeEventScreen({DateTime initialDate, Countdown countdown}) {
+    Countdown _countdown;
+    DateTime _initialDate;
     if (initialDate != null && countdown != null) {
       throw Exception(
           "Cannot pass both countdown and initialDate to constructor");
     }
     if (countdown != null) {
-      initialDate = countdown.date;
+      _initialDate = countdown.date;
+      _countdown = countdown;
     } else if (initialDate != null) {
       // ignore: missing_required_param
-      countdown = Countdown(date: initialDate);
+      _countdown = Countdown(date: initialDate);
+      _initialDate = initialDate;
     }
+    this.countdown = _countdown;
+    this.initialDate = _initialDate;
   }
 
   @override
