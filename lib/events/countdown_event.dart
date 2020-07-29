@@ -9,11 +9,12 @@ enum CountdownEventType {
 
 class CountdownEvent {
   Countdown countdown;
+  CountdownsCompanion companion;
   List<Countdown> countdowns;
   CountdownEventType type;
 
-  CountdownEvent.add(Countdown countdown) {
-    this.countdown = countdown;
+  CountdownEvent.add(CountdownsCompanion countdown) {
+    this.companion = countdown;
     this.type = CountdownEventType.add;
   }
 

@@ -18,7 +18,7 @@ class AppDatabase extends _$AppDatabase {
   int get schemaVersion => 1;
 
   // Create
-  Future<int> insertCountdown(Countdown countdown) =>
+  Future<int> insertCountdown(CountdownsCompanion countdown) =>
       into(countdowns).insert(countdown);
 
   // Read

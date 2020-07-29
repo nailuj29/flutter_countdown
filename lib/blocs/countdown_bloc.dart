@@ -16,24 +16,21 @@ class CountdownBloc extends Bloc<CountdownEvent, List<Countdown>> {
   Stream<List<Countdown>> mapEventToState(CountdownEvent event) async* {
     switch (event.type) {
       case CountdownEventType.add:
-        List<Countdown> newState = List.from(state);
-        if (event.countdown != null) {
-          _db.insertCountdown(event.countdown);
+        if (event.companion != null) {
+          await _db.insertCountdown(event.companion);
         }
+        List<Countdown> newState = await _db.getCountdowns();
         yield newState;
         break;
       case CountdownEventType.delete:
         List<Countdown> newState = List.from(state);
         newState.remove(event.countdown);
-        _db.deleteCountdown(event.countdown);
+        await _db.deleteCountdown(event.countdown);
         yield newState;
         break;
       case CountdownEventType.edit:
-        List<Countdown> newState = List.from(state);
-        int idx =
-            newState.indexWhere((element) => element.id == event.countdown.id);
-        newState[idx] = event.countdown;
-        _db.updateCountdown(event.countdown);
+        await _db.updateCountdown(event.countdown);
+        List<Countdown> newState = await _db.getCountdowns();
         yield newState;
         break;
       case CountdownEventType.ready:
