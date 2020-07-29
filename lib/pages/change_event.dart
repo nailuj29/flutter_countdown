@@ -28,15 +28,14 @@ class ChangeEventScreen extends StatefulWidget {
 
   @override
   State<StatefulWidget> createState() =>
-      _ChangeEventScreenState(initialDate: initialDate);
+      _ChangeEventScreenState(initialDate: initialDate, countdown: countdown);
 }
 
 class _ChangeEventScreenState extends State<ChangeEventScreen> {
-  DateTime date;
+  DateTime initialDate;
+  Countdown countdown;
 
-  _ChangeEventScreenState({DateTime initialDate}) {
-    date = initialDate;
-  }
+  _ChangeEventScreenState({this.initialDate, this.countdown});
 
   @override
   Widget build(BuildContext context) {
