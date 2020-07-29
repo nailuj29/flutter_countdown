@@ -19,7 +19,7 @@ class ChangeEventScreen extends StatefulWidget {
       _countdown = countdown;
     } else if (initialDate != null) {
       // ignore: missing_required_param
-      _countdown = Countdown(date: initialDate);
+      _countdown = null;
       _initialDate = initialDate;
     }
     this.countdown = _countdown;
@@ -34,7 +34,10 @@ class ChangeEventScreen extends StatefulWidget {
 class _ChangeEventScreenState extends State<ChangeEventScreen> {
   DateTime dateSet;
   Countdown countdown;
+  CountdownsCompanion companion = CountdownsCompanion();
   TextEditingController controller;
+
+  bool get isNew => countdown == null;
 
   _ChangeEventScreenState({this.dateSet, this.countdown})
       : controller = TextEditingController();
@@ -69,7 +72,13 @@ class _ChangeEventScreenState extends State<ChangeEventScreen> {
                 ],
               ),
               onPressed: () async {
-                setDate();
+                await setDate();
+                if (isNew) {
+                  companion = CountdownsCompanion.insert(
+                      name: companion.name.value, date: dateSet);
+                } else {
+                  countdown = Countdown(date: dateSet, name: countdown.name, id: countdown.id)
+                }
               },
             ),
             Row(
