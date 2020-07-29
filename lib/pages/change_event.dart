@@ -54,7 +54,7 @@ class _ChangeEventScreenState extends State<ChangeEventScreen> {
       body: Container(
         child: Column(
           children: <Widget>[
-            FlatButton(
+            RaisedButton(
               padding: EdgeInsets.all(10.0),
               color: Colors.grey[300],
               child: Row(
@@ -77,7 +77,8 @@ class _ChangeEventScreenState extends State<ChangeEventScreen> {
                   companion = CountdownsCompanion.insert(
                       name: companion.name.value, date: dateSet);
                 } else {
-                  countdown = Countdown(date: dateSet, name: countdown.name, id: countdown.id)
+                  countdown = Countdown(
+                      date: dateSet, name: countdown.name, id: countdown.id);
                 }
               },
             ),
@@ -93,7 +94,16 @@ class _ChangeEventScreenState extends State<ChangeEventScreen> {
                   ),
                 )
               ],
-            )
+            ),
+            SizedBox(height: 100.0,),
+            Row(children: <Widget>[
+              RaisedButton(
+                child: Text(
+                  "Save"
+                ),
+                onPressed: ,
+              )
+            ],)
           ],
         ),
         padding: EdgeInsets.all(16.0),

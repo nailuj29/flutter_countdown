@@ -63,15 +63,11 @@ class _HomeState extends State<Home> {
       ),
       floatingActionButton: FloatingActionButton(
         onPressed: () async {
-          // ignore: close_sinks
-          CountdownBloc bloc = BlocProvider.of<CountdownBloc>(context);
-          Countdown result = await Navigator.push<Countdown>(
-              context,
-              MaterialPageRoute(
-                builder: (context) => ChangeEventScreen(
-                  initialDate: DateTime.now(),
-                ),
-              ));
+          Navigator.of(context).push(MaterialPageRoute(
+            builder: (context) => ChangeEventScreen(
+              initialDate: DateTime.now(),
+            ),
+          ));
         },
         child: Icon(Icons.add),
       ),
