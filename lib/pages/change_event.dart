@@ -14,6 +14,7 @@ class ChangeEventScreen extends StatefulWidget {
     if (countdown != null) {
       initialDate = countdown.date;
     } else if (initialDate != null) {
+      // ignore: missing_required_param
       countdown = Countdown(date: initialDate);
     }
   }
