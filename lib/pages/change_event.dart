@@ -59,7 +59,7 @@ class _ChangeEventScreenState extends State<ChangeEventScreen> {
                     width: 16.0,
                   ),
                   Text(
-                    DateFormat.yMMMd().format(date),
+                    DateFormat.yMMMd().format(initialDate),
                     style: TextStyle(
                         color: Colors.black54, fontWeight: FontWeight.bold),
                   ),
@@ -90,9 +90,9 @@ class _ChangeEventScreenState extends State<ChangeEventScreen> {
   }
 
   setDate() async {
-    DateTime _date = await _getNewDate(date);
+    DateTime _date = await _getNewDate(initialDate);
     setState(() {
-      date = _date;
+      initialDate = _date;
     });
   }
 }
