@@ -13,14 +13,15 @@ void main() async {
 class MyApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
-    return MaterialApp(
-      title: "Countdown",
-      debugShowCheckedModeBanner: false,
-      theme: ThemeData(
-        primaryColor: Colors.teal.shade500,
-      ),
-      home: BlocProvider<CountdownBloc>(
-          create: (context) => CountdownBloc(), child: Home()),
-    );
+    return BlocProvider<CountdownBloc>(
+        create: (context) => CountdownBloc(),
+        child: MaterialApp(
+          title: "Countdown",
+          debugShowCheckedModeBanner: false,
+          theme: ThemeData(
+            primaryColor: Colors.teal.shade500,
+          ),
+          home: Home(),
+        ));
   }
 }

@@ -1,5 +1,8 @@
+import 'package:countdown/blocs/countdown_bloc.dart';
 import 'package:countdown/database/moor_db.dart';
+import 'package:countdown/events/countdown_event.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:intl/intl.dart';
 
 // ignore: must_be_immutable
@@ -95,15 +98,26 @@ class _ChangeEventScreenState extends State<ChangeEventScreen> {
                 )
               ],
             ),
-            SizedBox(height: 100.0,),
-            Row(children: <Widget>[
-              RaisedButton(
-                child: Text(
-                  "Save"
-                ),
-                onPressed: ,
-              )
-            ],)
+            SizedBox(
+              height: 100.0,
+            ),
+            Row(
+              children: <Widget>[
+                RaisedButton(
+                  child: Text("Save"),
+                  onPressed: () {
+                    CountdownBloc bloc = BlocProvider.of(context);
+                    if (isNew) {
+                      companion = CountdownsCompanion.insert(
+                          date: dateSet, name: controller.text);
+                      bloc.add(CountdownEvent.add(companion));
+                    }
+
+                    Navigator.of(context).pop();
+                  },
+                )
+              ],
+            )
           ],
         ),
         padding: EdgeInsets.all(16.0),
@@ -128,5 +142,11 @@ class _ChangeEventScreenState extends State<ChangeEventScreen> {
     setState(() {
       dateSet = _date;
     });
+  }
+
+  @override
+  void dispose() {
+    controller.dispose();
+    super.dispose();
   }
 }
