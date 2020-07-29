@@ -34,8 +34,10 @@ class ChangeEventScreen extends StatefulWidget {
 class _ChangeEventScreenState extends State<ChangeEventScreen> {
   DateTime dateSet;
   Countdown countdown;
+  TextEditingController controller;
 
-  _ChangeEventScreenState({this.dateSet, this.countdown});
+  _ChangeEventScreenState({this.dateSet, this.countdown})
+      : controller = TextEditingController();
 
   @override
   Widget build(BuildContext context) {
@@ -69,6 +71,17 @@ class _ChangeEventScreenState extends State<ChangeEventScreen> {
               onPressed: () async {
                 setDate();
               },
+            ),
+            Row(
+              children: <Widget>[
+                Text("Event Name:"),
+                SizedBox(
+                  width: 16.0,
+                ),
+                TextField(
+                  controller: controller,
+                )
+              ],
             )
           ],
         ),
