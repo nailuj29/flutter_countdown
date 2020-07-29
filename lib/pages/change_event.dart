@@ -78,8 +78,10 @@ class _ChangeEventScreenState extends State<ChangeEventScreen> {
                 SizedBox(
                   width: 16.0,
                 ),
-                TextField(
-                  controller: controller,
+                Expanded(
+                  child: TextField(
+                    controller: controller,
+                  ),
                 )
               ],
             )
