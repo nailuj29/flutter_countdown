@@ -28,14 +28,14 @@ class ChangeEventScreen extends StatefulWidget {
 
   @override
   State<StatefulWidget> createState() =>
-      _ChangeEventScreenState(initialDate: initialDate, countdown: countdown);
+      _ChangeEventScreenState(dateSet: initialDate, countdown: countdown);
 }
 
 class _ChangeEventScreenState extends State<ChangeEventScreen> {
-  DateTime initialDate;
+  DateTime dateSet;
   Countdown countdown;
 
-  _ChangeEventScreenState({this.initialDate, this.countdown});
+  _ChangeEventScreenState({this.dateSet, this.countdown});
 
   @override
   Widget build(BuildContext context) {
@@ -44,7 +44,7 @@ class _ChangeEventScreenState extends State<ChangeEventScreen> {
           title: Text("Change Event"),
           leading: IconButton(
             icon: Icon(Icons.arrow_back),
-            onPressed: () => Navigator.of(context).pop(),
+            onPressed: () => Navigator.of(context).pop<Countdown>(null),
           )),
       body: Container(
         child: Column(
@@ -59,7 +59,7 @@ class _ChangeEventScreenState extends State<ChangeEventScreen> {
                     width: 16.0,
                   ),
                   Text(
-                    DateFormat.yMMMd().format(initialDate),
+                    DateFormat.yMMMd().format(dateSet),
                     style: TextStyle(
                         color: Colors.black54, fontWeight: FontWeight.bold),
                   ),
@@ -90,9 +90,9 @@ class _ChangeEventScreenState extends State<ChangeEventScreen> {
   }
 
   setDate() async {
-    DateTime _date = await _getNewDate(initialDate);
+    DateTime _date = await _getNewDate(dateSet);
     setState(() {
-      initialDate = _date;
+      dateSet = _date;
     });
   }
 }
