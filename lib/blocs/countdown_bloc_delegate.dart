@@ -1,5 +1,6 @@
 import 'package:flutter_bloc/flutter_bloc.dart';
 
+@deprecated
 class CountdownBlocDelegate extends BlocDelegate {
   @override
   void onEvent(Bloc bloc, Object event) {

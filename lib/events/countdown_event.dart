@@ -1,5 +1,6 @@
 import 'package:countdown/database/moor_db.dart';
 
+@deprecated
 enum CountdownEventType {
   add,
   edit,
@@ -7,6 +8,7 @@ enum CountdownEventType {
   ready,
 }
 
+@deprecated
 class CountdownEvent {
   Countdown countdown;
   CountdownsCompanion companion;

@@ -2,6 +2,7 @@ import 'package:countdown/events/countdown_event.dart';
 import 'package:countdown/database/moor_db.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
+@deprecated
 class CountdownBloc extends Bloc<CountdownEvent, List<Countdown>> {
   AppDatabase _db;
   @override
