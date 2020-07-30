@@ -69,7 +69,10 @@ class _HomeState extends State<Home> {
                     },
                   ),
                   background: Container(
+                    alignment: AlignmentDirectional.centerStart,
                     color: Colors.red,
+                    child: Icon(Icons.delete_outline),
+                    padding: EdgeInsets.all(16.0),
                   ),
                   secondaryBackground: Container(
                     alignment: AlignmentDirectional.centerEnd,
