@@ -27,6 +27,8 @@ class _HomeState extends State<Home> {
         builder: (context, countdownList) {
           return ListView.separated(
               itemBuilder: (context, index) {
+                int _daysRemaining =
+                    countdownList[index].date.difference(DateTime.now()).inDays;
                 return Dismissible(
                   key: Key(countdownList[index].id.toString()),
                   child: ListTile(
@@ -43,7 +45,11 @@ class _HomeState extends State<Home> {
                             ))
                       ],
                     ),
-                    title: Container(),
+                    title: Container(
+                      child: Text(_daysRemaining > 0
+                          ? "${_daysRemaining + 1} days until ${countdownList[index].name}"
+                          : _daysRemaining == 0 ? "" : ""),
+                    ),
                   ),
                   background: Container(
                     color: Colors.red,
