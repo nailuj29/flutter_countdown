@@ -126,6 +126,10 @@ class _ChangeEventScreenState extends State<ChangeEventScreen> {
 
                     Navigator.of(context).pop();
                   },
+                ),
+                FlatButton(
+                  child: Text("Cancel"),
+                  onPressed: () => Navigator.of(context).pop(),
                 )
               ],
             )
