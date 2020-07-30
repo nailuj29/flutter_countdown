@@ -26,6 +26,7 @@ class _HomeState extends State<Home> {
       body: BlocConsumer<CountdownBloc, List<Countdown>>(
         builder: (context, countdownList) {
           return ListView.separated(
+              padding: EdgeInsets.all(0.0),
               itemBuilder: (context, index) {
                 int _daysRemaining =
                     countdownList[index].date.difference(DateTime.now()).inDays;
@@ -55,7 +56,10 @@ class _HomeState extends State<Home> {
                     color: Colors.red,
                   ),
                   secondaryBackground: Container(
+                    alignment: AlignmentDirectional.centerEnd,
                     color: Colors.red,
+                    child: Icon(Icons.delete_outline),
+                    padding: EdgeInsets.all(16.0),
                   ),
                 );
               },
