@@ -58,6 +58,15 @@ class _HomeState extends State<Home> {
                               ? "${countdownList[index].name} is today! 🎉"
                               : "${countdownList[index].name} was ${_daysRemaining.abs()} day${_daysRemaining == -1 ? "" : "s"} ago"),
                     ),
+                    onTap: () {
+                      Navigator.of(context).push(MaterialPageRoute(
+                        builder: (context) {
+                          return ChangeEventScreen(
+                            countdown: countdownList[index],
+                          );
+                        },
+                      ));
+                    },
                   ),
                   background: Container(
                     color: Colors.red,

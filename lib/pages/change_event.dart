@@ -43,7 +43,12 @@ class _ChangeEventScreenState extends State<ChangeEventScreen> {
   bool get isNew => countdown == null;
 
   _ChangeEventScreenState({this.dateSet, this.countdown})
-      : controller = TextEditingController();
+      : controller = TextEditingController() {
+    if (countdown != null) {
+      controller.text = countdown.name;
+    }
+    print(isNew);
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -52,7 +57,7 @@ class _ChangeEventScreenState extends State<ChangeEventScreen> {
           title: Text("Change Event"),
           leading: IconButton(
             icon: Icon(Icons.arrow_back),
-            onPressed: () => Navigator.of(context).pop<Countdown>(null),
+            onPressed: () => Navigator.of(context).pop(),
           )),
       body: Container(
         child: Column(
@@ -111,6 +116,12 @@ class _ChangeEventScreenState extends State<ChangeEventScreen> {
                       companion = CountdownsCompanion.insert(
                           date: dateSet, name: controller.text);
                       bloc.add(CountdownEvent.add(companion));
+                    } else {
+                      countdown = Countdown(
+                          id: countdown.id,
+                          date: dateSet,
+                          name: controller.text);
+                      bloc.add(CountdownEvent.edit(countdown));
                     }
 
                     Navigator.of(context).pop();
