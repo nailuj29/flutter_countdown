@@ -23,7 +23,6 @@ class AppDatabase extends _$AppDatabase {
 
   // Read
   Future<List<Countdown>> getCountdowns() => select(countdowns).get();
-  Stream<List<Countdown>> watchCountdowns() => select(countdowns).watch();
 
   // Update
   Future<bool> updateCountdown(Countdown countdown) =>

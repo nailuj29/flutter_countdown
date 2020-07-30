@@ -1,6 +1,7 @@
 import 'package:countdown/blocs/countdown_bloc.dart';
 import 'package:countdown/database/moor_db.dart';
 import 'package:countdown/pages/change_event.dart';
+import 'package:countdown/events/countdown_event.dart';
 import 'package:countdown/shared/date_utils.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -32,6 +33,10 @@ class _HomeState extends State<Home> {
                     countdownList[index].date.difference(DateTime.now()).inDays;
                 return Dismissible(
                   key: Key(countdownList[index].id.toString()),
+                  onDismissed: (direction) {
+                    CountdownBloc bloc = BlocProvider.of(context);
+                    bloc.add(CountdownEvent.delete(countdownList[index]));
+                  },
                   child: ListTile(
                     leading: Column(
                       children: <Widget>[
@@ -48,8 +53,10 @@ class _HomeState extends State<Home> {
                     ),
                     title: Container(
                       child: Text(_daysRemaining > 0
-                          ? "${_daysRemaining + 1} days until ${countdownList[index].name}"
-                          : _daysRemaining == 0 ? "" : ""),
+                          ? "${_daysRemaining + 1} day${_daysRemaining == 1 ? "" : "s"} until ${countdownList[index].name}"
+                          : _daysRemaining == 0
+                              ? "${countdownList[index].name} is today! 🎉"
+                              : "${countdownList[index].name} was ${_daysRemaining.abs()} day${_daysRemaining == -1 ? "" : "s"} ago"),
                     ),
                   ),
                   background: Container(
