@@ -5,6 +5,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 import 'package:intl/intl.dart';
+import 'package:provider/provider.dart';
 
 // ignore: must_be_immutable
 class ChangeEventScreen extends StatefulWidget {
@@ -53,6 +54,7 @@ class _ChangeEventScreenState extends State<ChangeEventScreen> {
 
   @override
   Widget build(BuildContext context) {
+    final database = Provider.of<AppDatabase>(context);
     return Scaffold(
       appBar: AppBar(
           title: Text("Change Event"),
@@ -112,7 +114,6 @@ class _ChangeEventScreenState extends State<ChangeEventScreen> {
                 RaisedButton(
                   child: Text("Save"),
                   onPressed: () async {
-                    CountdownBloc bloc = BlocProvider.of(context);
                     if (controller.text == null || controller.text.isEmpty) {
                       await Fluttertoast.showToast(
                         msg: "You must enter a name",
@@ -127,13 +128,13 @@ class _ChangeEventScreenState extends State<ChangeEventScreen> {
                     if (isNew) {
                       companion = CountdownsCompanion.insert(
                           date: dateSet, name: controller.text);
-                      bloc.add(CountdownEvent.add(companion));
+                      database.insertCountdown(companion);
                     } else {
                       countdown = Countdown(
                           id: countdown.id,
                           date: dateSet,
                           name: controller.text);
-                      bloc.add(CountdownEvent.edit(countdown));
+                      database.updateCountdown(countdown);
                     }
 
                     Navigator.of(context).pop();
