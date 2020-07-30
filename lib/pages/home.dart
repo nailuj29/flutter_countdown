@@ -60,9 +60,7 @@ class _HomeState extends State<Home> {
                 );
               },
               separatorBuilder: (context, index) {
-                return Divider(
-                  color: Colors.black,
-                );
+                return Divider(color: Colors.grey[800]);
               },
               itemCount: countdownList == null ? 0 : countdownList.length);
         },
