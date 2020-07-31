@@ -1,13 +1,15 @@
 import 'package:countdown/database/moor_db.dart';
 import 'package:flutter/material.dart';
 import 'package:countdown/pages/home.dart';
+import 'package:preferences/preferences.dart';
 import 'package:provider/provider.dart';
 
 void main() async {
-  runApp(MyApp());
+  await PrefService.init(prefix: "countdown_");
+  runApp(CountdownApp());
 }
 
-class MyApp extends StatelessWidget {
+class CountdownApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Provider(
