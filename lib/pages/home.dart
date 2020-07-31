@@ -1,7 +1,9 @@
 import 'package:countdown/database/moor_db.dart';
 import 'package:countdown/pages/change_event.dart';
+import 'package:countdown/pages/settings.dart';
 import 'package:countdown/shared/date_utils.dart';
 import 'package:flutter/material.dart';
+import 'package:preferences/preferences.dart';
 import 'package:provider/provider.dart';
 
 class Home extends StatefulWidget {
@@ -18,16 +20,18 @@ class _HomeState extends State<Home> {
       appBar: AppBar(
         title: const Text("Countdown"),
         actions: <Widget>[
-          /* IconButton(
-            icon: Icon(Icons.settings), 
-            onPressed: () {},
-          ), */
+          IconButton(
+            icon: Icon(Icons.settings),
+            onPressed: () => Navigator.of(context)
+                .push(MaterialPageRoute(builder: (context) => SettingsPage())),
+          ),
         ],
       ),
       body: StreamBuilder<List<Countdown>>(
           stream: database.watchCountdownsByDate(),
           builder: (context, snapshot) {
             final countdownList = snapshot.data;
+
             return countdownList == null
                 ? Center(
                     child: CircularProgressIndicator(
@@ -41,6 +45,11 @@ class _HomeState extends State<Home> {
                           .date
                           .difference(DateTime.now())
                           .inDays;
+                      if (_daysRemaining <= -1 &&
+                          PrefService.getBool("delete_past_countdowns")) {
+                        Provider.of<AppDatabase>(context)
+                            .deleteCountdown(countdownList[index]);
+                      }
                       return Dismissible(
                         key: Key(countdownList[index].id.toString()),
                         onDismissed: (direction) {
