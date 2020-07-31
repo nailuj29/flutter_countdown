@@ -1,10 +1,8 @@
-import 'package:countdown/blocs/countdown_bloc.dart';
 import 'package:countdown/database/moor_db.dart';
-import 'package:countdown/events/countdown_event.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 import 'package:intl/intl.dart';
+import 'package:provider/provider.dart';
 
 // ignore: must_be_immutable
 class ChangeEventScreen extends StatefulWidget {
@@ -53,6 +51,7 @@ class _ChangeEventScreenState extends State<ChangeEventScreen> {
 
   @override
   Widget build(BuildContext context) {
+    final database = Provider.of<AppDatabase>(context);
     return Scaffold(
       appBar: AppBar(
           title: Text("Change Event"),
@@ -65,19 +64,22 @@ class _ChangeEventScreenState extends State<ChangeEventScreen> {
           children: <Widget>[
             RaisedButton(
               padding: EdgeInsets.all(10.0),
-              color: Colors.grey[300],
               child: Row(
                 children: <Widget>[
-                  Icon(Icons.calendar_today, size: 22.0, color: Colors.black54),
+                  Icon(
+                    Icons.calendar_today,
+                    size: 22.0,
+                  ),
                   SizedBox(
                     width: 16.0,
                   ),
                   Text(
                     DateFormat.yMMMd().format(dateSet),
-                    style: TextStyle(
-                        color: Colors.black54, fontWeight: FontWeight.bold),
+                    style: TextStyle(fontWeight: FontWeight.bold),
                   ),
-                  Icon(Icons.arrow_drop_down, color: Colors.black54)
+                  Icon(
+                    Icons.arrow_drop_down,
+                  )
                 ],
               ),
               onPressed: () async {
@@ -112,28 +114,27 @@ class _ChangeEventScreenState extends State<ChangeEventScreen> {
                 RaisedButton(
                   child: Text("Save"),
                   onPressed: () async {
-                    CountdownBloc bloc = BlocProvider.of(context);
                     if (controller.text == null || controller.text.isEmpty) {
                       await Fluttertoast.showToast(
-                        msg: "You must enter a name",
-                        toastLength: Toast.LENGTH_SHORT,
-                        gravity: ToastGravity.BOTTOM,
-                        timeInSecForIosWeb: 1,
-                        backgroundColor: Colors.grey[500],
-                      );
+                          msg: "You must enter a name",
+                          toastLength: Toast.LENGTH_SHORT,
+                          gravity: ToastGravity.BOTTOM,
+                          timeInSecForIosWeb: 1,
+                          backgroundColor: Color(0xEEFFFFFF),
+                          textColor: Colors.black);
                       print("Cannot submit");
                       return;
                     }
                     if (isNew) {
                       companion = CountdownsCompanion.insert(
                           date: dateSet, name: controller.text);
-                      bloc.add(CountdownEvent.add(companion));
+                      database.insertCountdown(companion);
                     } else {
                       countdown = Countdown(
                           id: countdown.id,
                           date: dateSet,
                           name: controller.text);
-                      bloc.add(CountdownEvent.edit(countdown));
+                      database.updateCountdown(countdown);
                     }
 
                     Navigator.of(context).pop();

@@ -23,6 +23,10 @@ class AppDatabase extends _$AppDatabase {
 
   // Read
   Future<List<Countdown>> getCountdowns() => select(countdowns).get();
+  Stream<List<Countdown>> watchCountdowns() => select(countdowns).watch();
+  Stream<List<Countdown>> watchCountdownsByDate() => (select(countdowns)
+        ..orderBy([(countdown) => OrderingTerm(expression: countdown.date)]))
+      .watch();
 
   // Update
   Future<bool> updateCountdown(Countdown countdown) =>
