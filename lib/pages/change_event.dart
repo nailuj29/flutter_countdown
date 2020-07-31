@@ -64,19 +64,22 @@ class _ChangeEventScreenState extends State<ChangeEventScreen> {
           children: <Widget>[
             RaisedButton(
               padding: EdgeInsets.all(10.0),
-              color: Colors.grey[300],
               child: Row(
                 children: <Widget>[
-                  Icon(Icons.calendar_today, size: 22.0, color: Colors.black54),
+                  Icon(
+                    Icons.calendar_today,
+                    size: 22.0,
+                  ),
                   SizedBox(
                     width: 16.0,
                   ),
                   Text(
                     DateFormat.yMMMd().format(dateSet),
-                    style: TextStyle(
-                        color: Colors.black54, fontWeight: FontWeight.bold),
+                    style: TextStyle(fontWeight: FontWeight.bold),
                   ),
-                  Icon(Icons.arrow_drop_down, color: Colors.black54)
+                  Icon(
+                    Icons.arrow_drop_down,
+                  )
                 ],
               ),
               onPressed: () async {

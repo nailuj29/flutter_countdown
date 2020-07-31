@@ -21,6 +21,7 @@ class CountdownApp extends StatelessWidget {
           theme: ThemeData(
             primaryColor: Colors.teal.shade500,
           ),
+          darkTheme: ThemeData.dark(),
           home: Home(),
         ));
   }
