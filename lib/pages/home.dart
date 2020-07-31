@@ -25,7 +25,7 @@ class _HomeState extends State<Home> {
         ],
       ),
       body: StreamBuilder<List<Countdown>>(
-          stream: database.watchCountdowns(),
+          stream: database.watchCountdownsByDate(),
           builder: (context, snapshot) {
             final countdownList = snapshot.data;
             return countdownList == null

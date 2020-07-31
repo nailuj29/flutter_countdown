@@ -5,6 +5,7 @@ import 'package:preferences/preferences.dart';
 import 'package:provider/provider.dart';
 
 void main() async {
+  WidgetsFlutterBinding.ensureInitialized();
   await PrefService.init(prefix: "countdown_");
   runApp(CountdownApp());
 }
