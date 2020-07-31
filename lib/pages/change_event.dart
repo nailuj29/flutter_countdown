@@ -113,12 +113,12 @@ class _ChangeEventScreenState extends State<ChangeEventScreen> {
                   onPressed: () async {
                     if (controller.text == null || controller.text.isEmpty) {
                       await Fluttertoast.showToast(
-                        msg: "You must enter a name",
-                        toastLength: Toast.LENGTH_SHORT,
-                        gravity: ToastGravity.BOTTOM,
-                        timeInSecForIosWeb: 1,
-                        backgroundColor: Colors.grey[500],
-                      );
+                          msg: "You must enter a name",
+                          toastLength: Toast.LENGTH_SHORT,
+                          gravity: ToastGravity.BOTTOM,
+                          timeInSecForIosWeb: 1,
+                          backgroundColor: Color(0xEEFFFFFF),
+                          textColor: Colors.black);
                       print("Cannot submit");
                       return;
                     }
