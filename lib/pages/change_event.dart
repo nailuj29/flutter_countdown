@@ -1,4 +1,5 @@
 import 'package:countdown/database/moor_db.dart';
+import 'package:eyro_toast/eyro_toast.dart';
 import 'package:flutter/material.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 import 'package:intl/intl.dart';
@@ -115,13 +116,16 @@ class _ChangeEventScreenState extends State<ChangeEventScreen> {
                   child: Text("Save"),
                   onPressed: () async {
                     if (controller.text == null || controller.text.isEmpty) {
-                      await Fluttertoast.showToast(
-                          msg: "You must enter a name",
-                          toastLength: Toast.LENGTH_SHORT,
-                          gravity: ToastGravity.BOTTOM,
-                          timeInSecForIosWeb: 1,
-                          backgroundColor: Color(0xEEFFFFFF),
-                          textColor: Colors.black);
+                      // await Fluttertoast.showToast(
+                      //     msg: "You must enter a name",
+                      //     toastLength: Toast.LENGTH_SHORT,
+                      //     gravity: ToastGravity.BOTTOM,
+                      //     timeInSecForIosWeb: 1,
+                      //     backgroundColor: Color(0xEEFFFFFF),
+                      //     textColor: Colors.black);
+                      await EyroToast.showToast(
+                          text: "You must enter a name",
+                          duration: ToastDuration.short);
                       print("Cannot submit");
                       return;
                     }

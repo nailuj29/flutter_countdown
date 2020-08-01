@@ -16,7 +16,7 @@ class _SettingsPageState extends State<SettingsPage> {
         body: PreferencePage([
           PreferenceTitle("General"),
           SwitchPreference(
-              "Auto-delete past countdowns", "delete_past_countdowns")
+              "Auto-delete past countdowns", "delete_past_countdowns"),
         ]));
   }
 }
