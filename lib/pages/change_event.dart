@@ -1,5 +1,5 @@
 import 'package:countdown/database/moor_db.dart';
-import 'package:eyro_toast/eyro_toast.dart';
+import 'package:datetime_picker_formfield/datetime_picker_formfield.dart';
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 import 'package:provider/provider.dart';
@@ -48,7 +48,7 @@ class _ChangeEventScreenState extends State<ChangeEventScreen> {
     }
     print(isNew);
   }
-
+  final _formKey = GlobalKey<FormState>();
   @override
   Widget build(BuildContext context) {
     final database = Provider.of<AppDatabase>(context);
@@ -60,98 +60,83 @@ class _ChangeEventScreenState extends State<ChangeEventScreen> {
             onPressed: () => Navigator.of(context).pop(),
           )),
       body: Container(
-        child: Column(
-          children: <Widget>[
-            RaisedButton(
-              padding: EdgeInsets.all(10.0),
-              child: Row(
-                children: <Widget>[
-                  Icon(
-                    Icons.calendar_today,
-                    size: 22.0,
-                  ),
-                  SizedBox(
-                    width: 16.0,
-                  ),
-                  Text(
-                    DateFormat.yMMMd().format(dateSet),
-                    style: TextStyle(fontWeight: FontWeight.bold),
-                  ),
-                  Icon(
-                    Icons.arrow_drop_down,
-                  )
-                ],
+        margin: EdgeInsets.all(20.0),
+        child: Form(
+          key: _formKey,
+          child: Column(
+            children: <Widget>[
+              DateTimeField(
+                validator: (val) =>
+                    val == null ? 'You must enter a date' : null,
+                initialValue: isNew ? DateTime.now() : countdown.date,
+                format: DateFormat.yMMMd(),
+                onShowPicker: (context, currentValue) async {
+                  final result = await _getNewDate(currentValue);
+                  if (isNew) {
+                    companion = CountdownsCompanion.insert(
+                        name: companion.name.value, date: result);
+                  } else {
+                    countdown = Countdown(
+                        date: result, name: countdown.name, id: countdown.id);
+                  }
+                  dateSet = result;
+                  return result;
+                },
+                decoration: InputDecoration(
+                  border: OutlineInputBorder(),
+                  labelText: 'Date',
+                ),
               ),
-              onPressed: () async {
-                await setDate();
-                if (isNew) {
-                  companion = CountdownsCompanion.insert(
-                      name: companion.name.value, date: dateSet);
-                } else {
-                  countdown = Countdown(
-                      date: dateSet, name: countdown.name, id: countdown.id);
-                }
-              },
-            ),
-            Row(
-              children: <Widget>[
-                Text("Event Name:"),
-                SizedBox(
-                  width: 16.0,
+              SizedBox(
+                height: 20.0,
+              ),
+              TextFormField(
+                validator: (val) =>
+                    val.isEmpty ? 'You must enter a name' : null,
+                decoration: InputDecoration(
+                  border: OutlineInputBorder(),
+                  labelText: 'Name',
                 ),
-                Expanded(
-                  child: TextField(
-                    controller: controller,
-                  ),
-                )
-              ],
-            ),
-            SizedBox(
-              height: 100.0,
-            ),
-            Row(
-              children: <Widget>[
-                RaisedButton(
-                  child: Text("Save"),
-                  onPressed: () async {
-                    if (controller.text == null || controller.text.isEmpty) {
-                      // await Fluttertoast.showToast(
-                      //     msg: "You must enter a name",
-                      //     toastLength: Toast.LENGTH_SHORT,
-                      //     gravity: ToastGravity.BOTTOM,
-                      //     timeInSecForIosWeb: 1,
-                      //     backgroundColor: Color(0xEEFFFFFF),
-                      //     textColor: Colors.black);
-                      await EyroToast.showToast(
-                          text: "You must enter a name",
-                          duration: ToastDuration.short);
-                      print("Cannot submit");
-                      return;
-                    }
-                    if (isNew) {
-                      companion = CountdownsCompanion.insert(
-                          date: dateSet, name: controller.text);
-                      database.insertCountdown(companion);
-                    } else {
-                      countdown = Countdown(
-                          id: countdown.id,
-                          date: dateSet,
-                          name: controller.text);
-                      database.updateCountdown(countdown);
-                    }
+                controller: controller,
+              ),
+              Expanded(
+                child: Align(
+                  alignment: FractionalOffset.bottomCenter,
+                  child: Row(
+                    crossAxisAlignment: CrossAxisAlignment.end,
+                    mainAxisAlignment: MainAxisAlignment.end,
+                    children: <Widget>[
+                      RaisedButton(
+                        child: Text("Save"),
+                        onPressed: () async {
+                          if (_formKey.currentState.validate()) {
+                            if (isNew) {
+                              companion = CountdownsCompanion.insert(
+                                  date: dateSet, name: controller.text);
+                              await database.insertCountdown(companion);
+                            } else {
+                              countdown = Countdown(
+                                  id: countdown.id,
+                                  date: dateSet,
+                                  name: controller.text);
+                              await database.updateCountdown(countdown);
+                            }
 
-                    Navigator.of(context).pop();
-                  },
+                            Navigator.of(context).pop();
+                          }
+                        },
+                      ),
+                      FlatButton(
+                        child: Text("Cancel"),
+                        onPressed: () => Navigator.of(context).pop(),
+                      )
+                    ],
+                  ),
                 ),
-                FlatButton(
-                  child: Text("Cancel"),
-                  onPressed: () => Navigator.of(context).pop(),
-                )
-              ],
-            )
-          ],
+              )
+            ],
+          ),
         ),
-        padding: EdgeInsets.all(16.0),
       ),
     );
   }
@@ -166,13 +151,6 @@ class _ChangeEventScreenState extends State<ChangeEventScreen> {
       return currentDate;
     }
     return _date;
-  }
-
-  setDate() async {
-    DateTime _date = await _getNewDate(dateSet);
-    setState(() {
-      dateSet = _date;
-    });
   }
 
   @override

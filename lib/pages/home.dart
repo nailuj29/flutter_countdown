@@ -41,29 +41,29 @@ class _HomeState extends State<Home> {
                 : ListView.separated(
                     padding: EdgeInsets.all(0.0),
                     itemBuilder: (context, index) {
-                      int _daysRemaining = countdownList[index]
-                          .date
-                          .difference(DateTime.now())
-                          .inDays;
+                      final countdown = countdownList[index];
+                      int _daysRemaining =
+                          countdown.date.difference(DateTime.now()).inDays;
                       if (_daysRemaining <= -1 &&
                           PrefService.getBool("delete_past_countdowns")) {
                         Provider.of<AppDatabase>(context)
-                            .deleteCountdown(countdownList[index]);
+                            .deleteCountdown(countdown);
                       }
+
                       return Dismissible(
-                        key: Key(countdownList[index].id.toString()),
+                        key: Key(countdown.id.toString()),
                         onDismissed: (direction) {
-                          database.deleteCountdown(countdownList[index]);
+                          database.deleteCountdown(countdown);
                         },
                         child: ListTile(
                           leading: Column(
                             children: <Widget>[
                               SizedBox(height: 10.0),
-                              Text(DateUtils.month(countdownList[index].date),
+                              Text(DateUtils.month(countdown.date),
                                   style: TextStyle(
                                     fontSize: 12,
                                   )),
-                              Text(DateUtils.day(countdownList[index].date),
+                              Text(DateUtils.day(countdown.date),
                                   style: TextStyle(
                                     fontSize: 24,
                                   ))
@@ -71,16 +71,20 @@ class _HomeState extends State<Home> {
                           ),
                           title: Container(
                             child: Text(_daysRemaining > 0
-                                ? "${_daysRemaining + 1} day${_daysRemaining == 1 ? "" : "s"} until ${countdownList[index].name}"
+                                ? "${_daysRemaining + 1} day${_daysRemaining == 1 ? "" : "s"} until ${countdown.name}"
                                 : _daysRemaining == 0
-                                    ? "${countdownList[index].name} is today! 🎉"
-                                    : "${countdownList[index].name} was ${_daysRemaining.abs()} day${_daysRemaining == -1 ? "" : "s"} ago"),
+                                    ? countdown.name
+                                            .toLowerCase()
+                                            .contains('birthday')
+                                        ? "${countdown.name} is today! 🎉 (Happy Birthday!)"
+                                        : "${countdown.name} is today! 🎉"
+                                    : "${countdown.name} was ${_daysRemaining.abs()} day${_daysRemaining == -1 ? "" : "s"} ago"),
                           ),
                           onTap: () {
                             Navigator.of(context).push(MaterialPageRoute(
                               builder: (context) {
                                 return ChangeEventScreen(
-                                  countdown: countdownList[index],
+                                  countdown: countdown,
                                 );
                               },
                             ));
@@ -101,7 +105,8 @@ class _HomeState extends State<Home> {
                       );
                     },
                     separatorBuilder: (context, index) {
-                      return Divider(color: Colors.grey[800]);
+                      // return Divider(color: Colors.grey[800]);
+                      return Container(color: Colors.grey[800], height: 1);
                     },
                     itemCount:
                         countdownList == null ? 0 : countdownList.length);
