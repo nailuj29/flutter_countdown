@@ -66,7 +66,9 @@ class _ChangeEventScreenState extends State<ChangeEventScreen> {
           child: Column(
             children: <Widget>[
               DateTimeField(
-                initialValue: isNew ? null : countdown.date,
+                validator: (val) =>
+                    val == null ? 'You must enter a date' : null,
+                initialValue: isNew ? DateTime.now() : countdown.date,
                 format: DateFormat.yMMMd(),
                 onShowPicker: (context, currentValue) async {
                   final result = await setDate();
@@ -87,7 +89,9 @@ class _ChangeEventScreenState extends State<ChangeEventScreen> {
               SizedBox(
                 height: 20.0,
               ),
-              TextField(
+              TextFormField(
+                validator: (val) =>
+                    val.isEmpty ? 'You must enter a name' : null,
                 decoration: InputDecoration(
                   border: OutlineInputBorder(),
                   labelText: 'Name',
@@ -104,34 +108,21 @@ class _ChangeEventScreenState extends State<ChangeEventScreen> {
                       RaisedButton(
                         child: Text("Save"),
                         onPressed: () async {
-                          if (controller.text == null ||
-                              controller.text.isEmpty) {
-                            // await Fluttertoast.showToast(
-                            //     msg: "You must enter a name",
-                            //     toastLength: Toast.LENGTH_SHORT,
-                            //     gravity: ToastGravity.BOTTOM,
-                            //     timeInSecForIosWeb: 1,
-                            //     backgroundColor: Color(0xEEFFFFFF),
-                            //     textColor: Colors.black);
-                            await EyroToast.showToast(
-                                text: "You must enter a name",
-                                duration: ToastDuration.short);
-                            print("Cannot submit");
-                            return;
-                          }
-                          if (isNew) {
-                            companion = CountdownsCompanion.insert(
-                                date: dateSet, name: controller.text);
-                            database.insertCountdown(companion);
-                          } else {
-                            countdown = Countdown(
-                                id: countdown.id,
-                                date: dateSet,
-                                name: controller.text);
-                            database.updateCountdown(countdown);
-                          }
+                          if (_formKey.currentState.validate()) {
+                            if (isNew) {
+                              companion = CountdownsCompanion.insert(
+                                  date: dateSet, name: controller.text);
+                              database.insertCountdown(companion);
+                            } else {
+                              countdown = Countdown(
+                                  id: countdown.id,
+                                  date: dateSet,
+                                  name: controller.text);
+                              database.updateCountdown(countdown);
+                            }
 
-                          Navigator.of(context).pop();
+                            Navigator.of(context).pop();
+                          }
                         },
                       ),
                       FlatButton(
