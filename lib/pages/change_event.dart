@@ -79,6 +79,7 @@ class _ChangeEventScreenState extends State<ChangeEventScreen> {
                     countdown = Countdown(
                         date: result, name: countdown.name, id: countdown.id);
                   }
+                  dateSet = result;
                   return result;
                 },
                 decoration: InputDecoration(
