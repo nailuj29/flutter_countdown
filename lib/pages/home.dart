@@ -73,7 +73,12 @@ class _HomeState extends State<Home> {
                             child: Text(_daysRemaining > 0
                                 ? "${_daysRemaining + 1} day${_daysRemaining == 1 ? "" : "s"} until ${countdownList[index].name}"
                                 : _daysRemaining == 0
-                                    ? "${countdownList[index].name} is today! 🎉"
+                                    ? countdownList[index]
+                                            .name
+                                            .toLowerCase()
+                                            .contains('birthday')
+                                        ? "${countdownList[index].name} is today! 🎉 Happy Birthday!"
+                                        : "${countdownList[index].name} is today! 🎉"
                                     : "${countdownList[index].name} was ${_daysRemaining.abs()} day${_daysRemaining == -1 ? "" : "s"} ago"),
                           ),
                           onTap: () {
