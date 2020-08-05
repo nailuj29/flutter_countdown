@@ -34,14 +34,14 @@ class ChangeEventScreen extends StatefulWidget {
 }
 
 class _ChangeEventScreenState extends State<ChangeEventScreen> {
-  DateTime initialDate;
+  DateTime dateSet;
   Countdown countdown;
   CountdownsCompanion companion = CountdownsCompanion();
   TextEditingController controller;
 
   bool get isNew => countdown == null;
 
-  _ChangeEventScreenState({this.initialDate, this.countdown})
+  _ChangeEventScreenState({this.dateSet, this.countdown})
       : controller = TextEditingController() {
     if (countdown != null) {
       controller.text = countdown.name;
@@ -68,7 +68,7 @@ class _ChangeEventScreenState extends State<ChangeEventScreen> {
               DateTimeField(
                 validator: (val) =>
                     val == null ? 'You must enter a date' : null,
-                initialValue: isNew ? initialDate : countdown.date,
+                initialValue: isNew ? DateTime.now() : countdown.date,
                 format: DateFormat.yMMMd(),
                 onShowPicker: (context, currentValue) async {
                   final result = await _getNewDate(currentValue);
