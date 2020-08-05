@@ -1,4 +1,5 @@
 import 'package:countdown/database/moor_db.dart';
+import 'package:datetime_picker_formfield/datetime_picker_formfield.dart';
 import 'package:eyro_toast/eyro_toast.dart';
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
@@ -48,7 +49,7 @@ class _ChangeEventScreenState extends State<ChangeEventScreen> {
     }
     print(isNew);
   }
-
+  final _formKey = GlobalKey<FormState>();
   @override
   Widget build(BuildContext context) {
     final database = Provider.of<AppDatabase>(context);
@@ -59,38 +60,22 @@ class _ChangeEventScreenState extends State<ChangeEventScreen> {
             icon: Icon(Icons.arrow_back),
             onPressed: () => Navigator.of(context).pop(),
           )),
-      body: Container(
+      body: Form(
+        key: _formKey,
         child: Column(
           children: <Widget>[
-            RaisedButton(
-              padding: EdgeInsets.all(10.0),
-              child: Row(
-                children: <Widget>[
-                  Icon(
-                    Icons.calendar_today,
-                    size: 22.0,
-                  ),
-                  SizedBox(
-                    width: 16.0,
-                  ),
-                  Text(
-                    DateFormat.yMMMd().format(dateSet),
-                    style: TextStyle(fontWeight: FontWeight.bold),
-                  ),
-                  Icon(
-                    Icons.arrow_drop_down,
-                  )
-                ],
-              ),
-              onPressed: () async {
-                await setDate();
+            DateTimeField(
+              format: DateFormat.yMMMd(),
+              onShowPicker: (context, currentValue) async {
+                final result = await setDate();
                 if (isNew) {
                   companion = CountdownsCompanion.insert(
-                      name: companion.name.value, date: dateSet);
+                      name: companion.name.value, date: result);
                 } else {
                   countdown = Countdown(
-                      date: dateSet, name: countdown.name, id: countdown.id);
+                      date: result, name: countdown.name, id: countdown.id);
                 }
+                return result;
               },
             ),
             Row(
@@ -151,7 +136,6 @@ class _ChangeEventScreenState extends State<ChangeEventScreen> {
             )
           ],
         ),
-        padding: EdgeInsets.all(16.0),
       ),
     );
   }
@@ -173,6 +157,7 @@ class _ChangeEventScreenState extends State<ChangeEventScreen> {
     setState(() {
       dateSet = _date;
     });
+    return _date;
   }
 
   @override
