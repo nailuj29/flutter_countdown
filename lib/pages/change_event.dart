@@ -34,14 +34,14 @@ class ChangeEventScreen extends StatefulWidget {
 }
 
 class _ChangeEventScreenState extends State<ChangeEventScreen> {
-  DateTime dateSet;
+  DateTime initialDate;
   Countdown countdown;
   CountdownsCompanion companion = CountdownsCompanion();
   TextEditingController controller;
 
   bool get isNew => countdown == null;
 
-  _ChangeEventScreenState({this.dateSet, this.countdown})
+  _ChangeEventScreenState({this.initialDate, this.countdown})
       : controller = TextEditingController() {
     if (countdown != null) {
       controller.text = countdown.name;
@@ -68,10 +68,10 @@ class _ChangeEventScreenState extends State<ChangeEventScreen> {
               DateTimeField(
                 validator: (val) =>
                     val == null ? 'You must enter a date' : null,
-                initialValue: isNew ? DateTime.now() : countdown.date,
+                initialValue: isNew ? initialDate : countdown.date,
                 format: DateFormat.yMMMd(),
                 onShowPicker: (context, currentValue) async {
-                  final result = await setDate();
+                  final result = await _getNewDate(currentValue);
                   if (isNew) {
                     companion = CountdownsCompanion.insert(
                         name: companion.name.value, date: result);
@@ -112,13 +112,13 @@ class _ChangeEventScreenState extends State<ChangeEventScreen> {
                             if (isNew) {
                               companion = CountdownsCompanion.insert(
                                   date: dateSet, name: controller.text);
-                              database.insertCountdown(companion);
+                              await database.insertCountdown(companion);
                             } else {
                               countdown = Countdown(
                                   id: countdown.id,
                                   date: dateSet,
                                   name: controller.text);
-                              database.updateCountdown(countdown);
+                              await database.updateCountdown(countdown);
                             }
 
                             Navigator.of(context).pop();
@@ -149,14 +149,6 @@ class _ChangeEventScreenState extends State<ChangeEventScreen> {
     if (_date == null) {
       return currentDate;
     }
-    return _date;
-  }
-
-  setDate() async {
-    DateTime _date = await _getNewDate(dateSet);
-    setState(() {
-      dateSet = _date;
-    });
     return _date;
   }
 
