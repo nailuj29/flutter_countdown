@@ -63,10 +63,15 @@ class _HomeState extends State<Home> {
                         child: Padding(
                           padding: const EdgeInsets.all(0.0),
                           child: ListTile(
+                            contentPadding: EdgeInsets.all(0.0),
                             leading: Container(
+                              width: 50,
+                              color: Theme.of(context).backgroundColor.red > 120
+                                  ? Colors.grey[300]
+                                  : Colors.grey[800],
                               child: Column(
                                 children: <Widget>[
-                                  SizedBox(height: 10.0),
+                                  SizedBox(height: 6.0),
                                   Text(DateUtils.month(countdown.date),
                                       style: TextStyle(
                                         fontSize: 12,
@@ -115,8 +120,11 @@ class _HomeState extends State<Home> {
                       );
                     },
                     separatorBuilder: (context, index) {
-                      // return Divider(color: Colors.grey[800]);
-                      return Container(color: Colors.grey[800], height: 1);
+                      return Container(
+                          color: Theme.of(context).backgroundColor.red > 120
+                              ? Colors.grey[400]
+                              : Colors.grey[900],
+                          height: 1);
                     },
                     itemCount:
                         countdownList == null ? 0 : countdownList.length);
