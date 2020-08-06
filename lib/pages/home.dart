@@ -42,8 +42,13 @@ class _HomeState extends State<Home> {
                     padding: EdgeInsets.all(0.0),
                     itemBuilder: (context, index) {
                       final countdown = countdownList[index];
+                      final countdownDate = DateTime(countdown.date.year,
+                          countdown.date.month, countdown.date.day);
+                      DateTime todaysDate = DateTime.now();
+                      todaysDate = DateTime(
+                          todaysDate.year, todaysDate.month, todaysDate.day);
                       int _daysRemaining =
-                          countdown.date.difference(DateTime.now()).inDays;
+                          countdownDate.difference(todaysDate).inDays;
                       if (_daysRemaining <= -1 &&
                           PrefService.getBool("delete_past_countdowns")) {
                         Provider.of<AppDatabase>(context)
@@ -55,40 +60,45 @@ class _HomeState extends State<Home> {
                         onDismissed: (direction) {
                           database.deleteCountdown(countdown);
                         },
-                        child: ListTile(
-                          leading: Column(
-                            children: <Widget>[
-                              SizedBox(height: 10.0),
-                              Text(DateUtils.month(countdown.date),
-                                  style: TextStyle(
-                                    fontSize: 12,
-                                  )),
-                              Text(DateUtils.day(countdown.date),
-                                  style: TextStyle(
-                                    fontSize: 24,
-                                  ))
-                            ],
+                        child: Padding(
+                          padding: const EdgeInsets.all(0.0),
+                          child: ListTile(
+                            leading: Container(
+                              child: Column(
+                                children: <Widget>[
+                                  SizedBox(height: 10.0),
+                                  Text(DateUtils.month(countdown.date),
+                                      style: TextStyle(
+                                        fontSize: 12,
+                                      )),
+                                  Text(DateUtils.day(countdown.date),
+                                      style: TextStyle(
+                                        fontSize: 24,
+                                      ))
+                                ],
+                              ),
+                            ),
+                            title: Container(
+                              child: Text(_daysRemaining > 0
+                                  ? "$_daysRemaining day${_daysRemaining == 1 ? "" : "s"} until ${countdown.name}"
+                                  : _daysRemaining == 0
+                                      ? countdown.name
+                                              .toLowerCase()
+                                              .contains('birthday')
+                                          ? "${countdown.name} is today! 🎉 (Happy Birthday!)"
+                                          : "${countdown.name} is today! 🎉"
+                                      : "${countdown.name} was ${_daysRemaining.abs()} day${_daysRemaining == -1 ? "" : "s"} ago"),
+                            ),
+                            onTap: () {
+                              Navigator.of(context).push(MaterialPageRoute(
+                                builder: (context) {
+                                  return ChangeEventScreen(
+                                    countdown: countdown,
+                                  );
+                                },
+                              ));
+                            },
                           ),
-                          title: Container(
-                            child: Text(_daysRemaining > 0
-                                ? "${_daysRemaining + 1} day${_daysRemaining == 1 ? "" : "s"} until ${countdown.name}"
-                                : _daysRemaining == 0
-                                    ? countdown.name
-                                            .toLowerCase()
-                                            .contains('birthday')
-                                        ? "${countdown.name} is today! 🎉 (Happy Birthday!)"
-                                        : "${countdown.name} is today! 🎉"
-                                    : "${countdown.name} was ${_daysRemaining.abs()} day${_daysRemaining == -1 ? "" : "s"} ago"),
-                          ),
-                          onTap: () {
-                            Navigator.of(context).push(MaterialPageRoute(
-                              builder: (context) {
-                                return ChangeEventScreen(
-                                  countdown: countdown,
-                                );
-                              },
-                            ));
-                          },
                         ),
                         background: Container(
                           alignment: AlignmentDirectional.centerStart,
