@@ -2,3 +2,4 @@
 
 A Flutter port of my android_countdown repository, with many more features
 
+The app can be fount [here](https://play.google.com/store/apps/details?id=com.nailuj29gaming.countdown)
