@@ -24,4 +24,7 @@
         "**/.factorypath": true
     },
     "dart.previewFlutterUiGuides": true,
+    "files.watcherExclude": {
+        "**/target": true
+    },
 }

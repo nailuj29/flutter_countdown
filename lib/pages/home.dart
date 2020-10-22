@@ -91,7 +91,15 @@ class _HomeState extends State<Home> {
                                               .toLowerCase()
                                               .contains('birthday')
                                           ? "${countdown.name} is today! 🎉 (Happy Birthday!)"
-                                          : "${countdown.name} is today! 🎉"
+                                          : countdown.date.day == 31 &&
+                                                  countdown.date.month ==
+                                                      10 // Halloween
+                                              ? "${countdown.name} is today! 🎃"
+                                              // TODO: add holiday messages for other holdiays where the date differs like Thanksgiving and Hanukkah
+                                              : countdown.date.day == 25 &&
+                                                      countdown.date.month == 12
+                                                  ? "${countdown.name} is today! 🎄"
+                                                  : "${countdown.name} is today! 🎉"
                                       : "${countdown.name} was ${_daysRemaining.abs()} day${_daysRemaining == -1 ? "" : "s"} ago"),
                             ),
                             onTap: () {
