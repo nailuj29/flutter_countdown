@@ -11,18 +11,30 @@ class Countdown extends DataClass implements Insertable<Countdown> {
   final int id;
   final String name;
   final DateTime date;
-  Countdown({@required this.id, @required this.name, @required this.date});
+  final bool repeats;
+  final RepeatType repeatType;
+  Countdown(
+      {@required this.id,
+      @required this.name,
+      @required this.date,
+      @required this.repeats,
+      this.repeatType});
   factory Countdown.fromData(Map<String, dynamic> data, GeneratedDatabase db,
       {String prefix}) {
     final effectivePrefix = prefix ?? '';
     final intType = db.typeSystem.forDartType<int>();
     final stringType = db.typeSystem.forDartType<String>();
     final dateTimeType = db.typeSystem.forDartType<DateTime>();
+    final boolType = db.typeSystem.forDartType<bool>();
     return Countdown(
       id: intType.mapFromDatabaseResponse(data['${effectivePrefix}id']),
       name: stringType.mapFromDatabaseResponse(data['${effectivePrefix}name']),
       date:
           dateTimeType.mapFromDatabaseResponse(data['${effectivePrefix}date']),
+      repeats:
+          boolType.mapFromDatabaseResponse(data['${effectivePrefix}repeats']),
+      repeatType: $CountdownsTable.$converter0.mapToDart(intType
+          .mapFromDatabaseResponse(data['${effectivePrefix}repeat_type'])),
     );
   }
   @override
@@ -37,6 +49,13 @@ class Countdown extends DataClass implements Insertable<Countdown> {
     if (!nullToAbsent || date != null) {
       map['date'] = Variable<DateTime>(date);
     }
+    if (!nullToAbsent || repeats != null) {
+      map['repeats'] = Variable<bool>(repeats);
+    }
+    if (!nullToAbsent || repeatType != null) {
+      final converter = $CountdownsTable.$converter0;
+      map['repeat_type'] = Variable<int>(converter.mapToSql(repeatType));
+    }
     return map;
   }
 
@@ -45,6 +64,12 @@ class Countdown extends DataClass implements Insertable<Countdown> {
       id: id == null && nullToAbsent ? const Value.absent() : Value(id),
       name: name == null && nullToAbsent ? const Value.absent() : Value(name),
       date: date == null && nullToAbsent ? const Value.absent() : Value(date),
+      repeats: repeats == null && nullToAbsent
+          ? const Value.absent()
+          : Value(repeats),
+      repeatType: repeatType == null && nullToAbsent
+          ? const Value.absent()
+          : Value(repeatType),
     );
   }
 
@@ -55,6 +80,8 @@ class Countdown extends DataClass implements Insertable<Countdown> {
       id: serializer.fromJson<int>(json['id']),
       name: serializer.fromJson<String>(json['name']),
       date: serializer.fromJson<DateTime>(json['date']),
+      repeats: serializer.fromJson<bool>(json['repeats']),
+      repeatType: serializer.fromJson<RepeatType>(json['repeatType']),
     );
   }
   @override
@@ -64,69 +91,101 @@ class Countdown extends DataClass implements Insertable<Countdown> {
       'id': serializer.toJson<int>(id),
       'name': serializer.toJson<String>(name),
       'date': serializer.toJson<DateTime>(date),
+      'repeats': serializer.toJson<bool>(repeats),
+      'repeatType': serializer.toJson<RepeatType>(repeatType),
     };
   }
 
-  Countdown copyWith({int id, String name, DateTime date}) => Countdown(
+  Countdown copyWith(
+          {int id,
+          String name,
+          DateTime date,
+          bool repeats,
+          RepeatType repeatType}) =>
+      Countdown(
         id: id ?? this.id,
         name: name ?? this.name,
         date: date ?? this.date,
+        repeats: repeats ?? this.repeats,
+        repeatType: repeatType ?? this.repeatType,
       );
   @override
   String toString() {
     return (StringBuffer('Countdown(')
           ..write('id: $id, ')
           ..write('name: $name, ')
-          ..write('date: $date')
+          ..write('date: $date, ')
+          ..write('repeats: $repeats, ')
+          ..write('repeatType: $repeatType')
           ..write(')'))
         .toString();
   }
 
   @override
-  int get hashCode =>
-      $mrjf($mrjc(id.hashCode, $mrjc(name.hashCode, date.hashCode)));
+  int get hashCode => $mrjf($mrjc(
+      id.hashCode,
+      $mrjc(name.hashCode,
+          $mrjc(date.hashCode, $mrjc(repeats.hashCode, repeatType.hashCode)))));
   @override
   bool operator ==(dynamic other) =>
       identical(this, other) ||
       (other is Countdown &&
           other.id == this.id &&
           other.name == this.name &&
-          other.date == this.date);
+          other.date == this.date &&
+          other.repeats == this.repeats &&
+          other.repeatType == this.repeatType);
 }
 
 class CountdownsCompanion extends UpdateCompanion<Countdown> {
   final Value<int> id;
   final Value<String> name;
   final Value<DateTime> date;
+  final Value<bool> repeats;
+  final Value<RepeatType> repeatType;
   const CountdownsCompanion({
     this.id = const Value.absent(),
     this.name = const Value.absent(),
     this.date = const Value.absent(),
+    this.repeats = const Value.absent(),
+    this.repeatType = const Value.absent(),
   });
   CountdownsCompanion.insert({
     this.id = const Value.absent(),
     @required String name,
     @required DateTime date,
+    this.repeats = const Value.absent(),
+    this.repeatType = const Value.absent(),
   })  : name = Value(name),
         date = Value(date);
   static Insertable<Countdown> custom({
     Expression<int> id,
     Expression<String> name,
     Expression<DateTime> date,
+    Expression<bool> repeats,
+    Expression<int> repeatType,
   }) {
     return RawValuesInsertable({
       if (id != null) 'id': id,
       if (name != null) 'name': name,
       if (date != null) 'date': date,
+      if (repeats != null) 'repeats': repeats,
+      if (repeatType != null) 'repeat_type': repeatType,
     });
   }
 
   CountdownsCompanion copyWith(
-      {Value<int> id, Value<String> name, Value<DateTime> date}) {
+      {Value<int> id,
+      Value<String> name,
+      Value<DateTime> date,
+      Value<bool> repeats,
+      Value<RepeatType> repeatType}) {
     return CountdownsCompanion(
       id: id ?? this.id,
       name: name ?? this.name,
       date: date ?? this.date,
+      repeats: repeats ?? this.repeats,
+      repeatType: repeatType ?? this.repeatType,
     );
   }
 
@@ -142,7 +201,26 @@ class CountdownsCompanion extends UpdateCompanion<Countdown> {
     if (date.present) {
       map['date'] = Variable<DateTime>(date.value);
     }
+    if (repeats.present) {
+      map['repeats'] = Variable<bool>(repeats.value);
+    }
+    if (repeatType.present) {
+      final converter = $CountdownsTable.$converter0;
+      map['repeat_type'] = Variable<int>(converter.mapToSql(repeatType.value));
+    }
     return map;
+  }
+
+  @override
+  String toString() {
+    return (StringBuffer('CountdownsCompanion(')
+          ..write('id: $id, ')
+          ..write('name: $name, ')
+          ..write('date: $date, ')
+          ..write('repeats: $repeats, ')
+          ..write('repeatType: $repeatType')
+          ..write(')'))
+        .toString();
   }
 }
 
@@ -181,8 +259,29 @@ class $CountdownsTable extends Countdowns
     );
   }
 
+  final VerificationMeta _repeatsMeta = const VerificationMeta('repeats');
+  GeneratedBoolColumn _repeats;
   @override
-  List<GeneratedColumn> get $columns => [id, name, date];
+  GeneratedBoolColumn get repeats => _repeats ??= _constructRepeats();
+  GeneratedBoolColumn _constructRepeats() {
+    return GeneratedBoolColumn('repeats', $tableName, false,
+        defaultValue: Constant(false));
+  }
+
+  final VerificationMeta _repeatTypeMeta = const VerificationMeta('repeatType');
+  GeneratedIntColumn _repeatType;
+  @override
+  GeneratedIntColumn get repeatType => _repeatType ??= _constructRepeatType();
+  GeneratedIntColumn _constructRepeatType() {
+    return GeneratedIntColumn(
+      'repeat_type',
+      $tableName,
+      true,
+    );
+  }
+
+  @override
+  List<GeneratedColumn> get $columns => [id, name, date, repeats, repeatType];
   @override
   $CountdownsTable get asDslTable => this;
   @override
@@ -209,6 +308,11 @@ class $CountdownsTable extends Countdowns
     } else if (isInserting) {
       context.missing(_dateMeta);
     }
+    if (data.containsKey('repeats')) {
+      context.handle(_repeatsMeta,
+          repeats.isAcceptableOrUnknown(data['repeats'], _repeatsMeta));
+    }
+    context.handle(_repeatTypeMeta, const VerificationResult.success());
     return context;
   }
 
@@ -224,6 +328,8 @@ class $CountdownsTable extends Countdowns
   $CountdownsTable createAlias(String alias) {
     return $CountdownsTable(_db, alias);
   }
+
+  static TypeConverter<RepeatType, int> $converter0 = const RepeatConverter();
 }
 
 abstract class _$AppDatabase extends GeneratedDatabase {
