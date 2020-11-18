@@ -1,7 +1,10 @@
 import 'package:countdown/database/moor_db.dart';
+import 'package:countdown/database/repeat_type.dart';
+import 'package:countdown/shared/string_to_repeat_type.dart';
 import 'package:datetime_picker_formfield/datetime_picker_formfield.dart';
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
+import 'package:moor_flutter/moor_flutter.dart' hide Column;
 import 'package:provider/provider.dart';
 
 // ignore: must_be_immutable
@@ -36,6 +39,8 @@ class ChangeEventScreen extends StatefulWidget {
 class _ChangeEventScreenState extends State<ChangeEventScreen> {
   DateTime dateSet;
   Countdown countdown;
+  bool repeats = false;
+  RepeatType type = RepeatType.none;
   CountdownsCompanion companion = CountdownsCompanion();
   TextEditingController controller;
 
@@ -45,6 +50,8 @@ class _ChangeEventScreenState extends State<ChangeEventScreen> {
       : controller = TextEditingController() {
     if (countdown != null) {
       controller.text = countdown.name;
+      repeats = countdown.repeats;
+      type = countdown.repeatType;
     }
     print(isNew);
   }
@@ -77,7 +84,10 @@ class _ChangeEventScreenState extends State<ChangeEventScreen> {
                         name: companion.name.value, date: result);
                   } else {
                     countdown = Countdown(
-                        date: result, name: countdown.name, id: countdown.id);
+                        date: result,
+                        name: countdown.name,
+                        id: countdown.id,
+                        repeats: countdown.repeats);
                   }
                   dateSet = result;
                   return result;
@@ -99,6 +109,42 @@ class _ChangeEventScreenState extends State<ChangeEventScreen> {
                 ),
                 controller: controller,
               ),
+              FormField(builder: (field) {
+                return CheckboxListTile(
+                  value: repeats,
+                  onChanged: (val) {
+                    setState(() {
+                      repeats = val;
+                    });
+                  },
+                  title: Text('Repeats'),
+                );
+              }),
+              DropdownButtonFormField(
+                items: ['Weekly', 'Monthly', 'Yearly']
+                    .map<DropdownMenuItem<String>>((String value) {
+                  return DropdownMenuItem<String>(
+                    value: value,
+                    child: Text(value),
+                  );
+                }).toList(),
+                onChanged: repeats
+                    ? (String val) {
+                        setState(() {
+                          type = val.toRepeatType();
+                        });
+                      }
+                    : null,
+                value: type.makeString(),
+                decoration: InputDecoration(
+                    labelText: 'Repeat Interval', border: OutlineInputBorder()),
+                validator: (String value) {
+                  if (repeats && (value == null || value.isEmpty)) {
+                    return 'You must choose a repeat interval if the countdown repeats.';
+                  }
+                  return null;
+                },
+              ),
               Expanded(
                 child: Align(
                   alignment: FractionalOffset.bottomCenter,
@@ -112,13 +158,18 @@ class _ChangeEventScreenState extends State<ChangeEventScreen> {
                           if (_formKey.currentState.validate()) {
                             if (isNew) {
                               companion = CountdownsCompanion.insert(
-                                  date: dateSet, name: controller.text);
+                                  date: dateSet,
+                                  name: controller.text,
+                                  repeats: Value(repeats),
+                                  repeatType: Value(type));
                               await database.insertCountdown(companion);
                             } else {
                               countdown = Countdown(
                                   id: countdown.id,
                                   date: dateSet,
-                                  name: controller.text);
+                                  name: controller.text,
+                                  repeats: repeats,
+                                  repeatType: type);
                               await database.updateCountdown(countdown);
                             }
 

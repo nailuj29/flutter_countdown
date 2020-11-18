@@ -12,6 +12,8 @@ class Home extends StatefulWidget {
 }
 
 class _HomeState extends State<Home> {
+  Countdown deletedCountdown;
+
   @override
   Widget build(BuildContext context) {
     final database = Provider.of<AppDatabase>(context);
@@ -59,6 +61,16 @@ class _HomeState extends State<Home> {
                         key: Key(countdown.id.toString()),
                         onDismissed: (direction) {
                           database.deleteCountdown(countdown);
+                          deletedCountdown = countdown;
+                          Scaffold.of(context).showSnackBar(SnackBar(
+                              content: Text(
+                                  'Countdown ${deletedCountdown.name} deleted.'),
+                              action: SnackBarAction(
+                                  label: 'Undo',
+                                  onPressed: () {
+                                    database.insertCountdown(
+                                        deletedCountdown.toCompanion(true));
+                                  })));
                         },
                         child: Padding(
                           padding: const EdgeInsets.all(0.0),
@@ -84,6 +96,7 @@ class _HomeState extends State<Home> {
                               ),
                             ),
                             title: Container(
+                              padding: EdgeInsets.only(right: 15.0),
                               child: Text(_daysRemaining > 0
                                   ? "$_daysRemaining day${_daysRemaining == 1 ? "" : "s"} until ${countdown.name}"
                                   : _daysRemaining == 0
