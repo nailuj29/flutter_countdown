@@ -1,4 +1,5 @@
 import 'package:countdown/database/moor_db.dart';
+import 'package:countdown/database/repeat_type.dart';
 import 'package:countdown/pages/change_event.dart';
 import 'package:countdown/pages/settings.dart';
 import 'package:countdown/shared/date_utils.dart';
@@ -53,12 +54,40 @@ class _HomeState extends State<Home> {
                           countdownDate.difference(todaysDate).inDays;
                       if (_daysRemaining <= -1 &&
                           PrefService.getBool("delete_past_countdowns")) {
-                        Provider.of<AppDatabase>(context)
-                            .deleteCountdown(countdown);
+                        if (countdown.repeats) {
+                          Countdown newCountdown;
+                          switch (countdown.repeatType) {
+                            case RepeatType.none:
+                              newCountdown = countdown;
+                              break;
+                            case RepeatType.weekly:
+                              newCountdown = countdown.copyWith(
+                                  date: countdownDate.add(Duration(days: 7)));
+                              break;
+                            case RepeatType.monthly:
+                              var newDate = DateTime(
+                                  countdownDate.year +
+                                      (countdownDate.month == 12 ? 1 : 0),
+                                  countdownDate.month == 12
+                                      ? 1
+                                      : countdownDate.month + 1,
+                                  countdownDate.day);
+                              newCountdown = countdown.copyWith(date: newDate);
+                              break;
+                            case RepeatType.yearly:
+                              var newDate = DateTime(countdownDate.year + 1,
+                                  countdownDate.month, countdownDate.day);
+                              newCountdown = countdown.copyWith(date: newDate);
+                              break;
+                          }
+                          database.updateCountdown(newCountdown);
+                        } else {
+                          database.deleteCountdown(countdown);
+                        }
                       }
 
                       return Dismissible(
-                        key: Key(countdown.id.toString()),
+                        key: UniqueKey(),
                         onDismissed: (direction) {
                           database.deleteCountdown(countdown);
                           deletedCountdown = countdown;
