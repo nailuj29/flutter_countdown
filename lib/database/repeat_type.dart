@@ -1,13 +1,15 @@
 import 'package:moor_flutter/moor_flutter.dart';
 
+/// How often the [Countdown] will repeat.
+///
+/// Should never be `none` under normal circumstances.
 enum RepeatType { none, weekly, monthly, yearly }
 
+/// Provides a method to turn a [RepeatType] into a `String`.
 extension RepeatTypeImpl on RepeatType {
-  @override
+  /// Returns a string corresponding to the value of the [RepeatType].
   String makeString() {
     switch (this) {
-      case RepeatType.none:
-        return null;
       case RepeatType.weekly:
         return 'Weekly';
       case RepeatType.monthly:
@@ -20,6 +22,7 @@ extension RepeatTypeImpl on RepeatType {
   }
 }
 
+/// Converts a [RepeatType] into an `int`.
 class RepeatConverter extends TypeConverter<RepeatType, int> {
   const RepeatConverter();
   static const Map<int, RepeatType> types = {
