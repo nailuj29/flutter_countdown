@@ -3,7 +3,7 @@ import 'package:countdown/database/repeat_type.dart';
 import 'package:countdown/pages/change_event.dart';
 import 'package:countdown/pages/settings.dart';
 import 'package:countdown/shared/date_utils.dart';
-import 'package:flutter/material.dart';
+import 'package:flutter/material.dart' hide DateUtils;
 import 'package:preferences/preferences.dart';
 import 'package:provider/provider.dart';
 
